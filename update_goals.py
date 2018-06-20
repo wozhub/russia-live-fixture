@@ -19,6 +19,7 @@ WD = create_webdriver()
 sleep(2)
 
 # Compruebo tener los goles de cada partido
+UPDATES = False
 for match in db.matches.select().execute().fetchall():
     goals = db.session.query(db.goals).filter(db.goals.columns.match_id == match.id)
     if match.home_score + match.away_score == goals.count():
@@ -35,7 +36,13 @@ for match in db.matches.select().execute().fetchall():
                 try:
                     db.goals.insert(goal).execute()
                     print("New: ", goal)
+                    UPDATES = True
                 except exc.IntegrityError:
                     continue
 
 WD.close()
+
+if UPDATES:
+    exit(0)
+else:
+    exit(1)

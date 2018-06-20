@@ -2,6 +2,7 @@
 
 from time import sleep
 from sqlalchemy import exc
+from sys import exit
 
 from database import Database
 from webdriver import create_webdriver
@@ -15,6 +16,7 @@ MATCHES_URL = "https://www.fifa.com/worldcup/matches/"
 WEB_DRIVER.get(MATCHES_URL)
 sleep(5)
 
+UPDATES=False
 for m in WEB_DRIVER.find_elements_by_class_name('fi-mu__link'):
     if not "FULL-TIME" in m.text:
         continue
@@ -35,8 +37,14 @@ for m in WEB_DRIVER.find_elements_by_class_name('fi-mu__link'):
 
     try:
         db.matches.insert(match).execute()
+        UPDATES=True
         print("New: ", match)
     except exc.IntegrityError:
         continue
 
 WEB_DRIVER.close()
+
+if UPDATES:
+    exit(0)
+else:
+    exit(1)

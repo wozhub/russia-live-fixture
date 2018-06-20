@@ -38,7 +38,7 @@ for sheet in DOC.worksheets():
         break
 
 if not FOUND:
-    exit()
+    exit(1)
 
 #GOALS = db.goals.select().execute().fetchall()
 GOALS = db.goals.select().order_by(db.goals.columns.match_id).execute().fetchall()
