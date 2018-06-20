@@ -10,8 +10,8 @@ from webdriver import create_webdriver
 
 db = Database()
 
-virtual_display = Xvfb()
-virtual_display.start()
+#virtual_display = Xvfb()
+#virtual_display.start()
 
 WEB_DRIVER = create_webdriver()
 
@@ -51,4 +51,4 @@ for m in WEB_DRIVER.find_elements_by_class_name('fi-mu__link'):
         continue
 
 WEB_DRIVER.close()
-virtual_display.stop()
+# virtual_display.stop()
