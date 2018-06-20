@@ -20,7 +20,7 @@ db = Database()
 
 virtual_display = Xvfb()
 virtual_display.start()
-web_driver = webdriver.Chrome()
+
 #sleep(5)
 #d.maximize_window()
 

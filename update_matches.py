@@ -1,28 +1,30 @@
 #!/usr/bin/env python3
 
 from time import sleep
-from selenium import webdriver
+
 from sqlalchemy import exc
 from xvfbwrapper import Xvfb
 
 from database import Database
-
+from webdriver import create_webdriver
 
 db = Database()
 
 virtual_display = Xvfb()
 virtual_display.start()
-web_driver = webdriver.Chrome()
+
+WEB_DRIVER = create_webdriver()
+
 sleep(2)
 #web_driver.maximize_window()
 
 # Busco los partidos
 MATCHES_URL = "https://www.fifa.com/worldcup/matches/"
-web_driver.get(MATCHES_URL)
+WEB_DRIVER.get(MATCHES_URL)
 sleep(5)
 
 # matches = []
-for m in web_driver.find_elements_by_class_name('fi-mu__link'):
+for m in WEB_DRIVER.find_elements_by_class_name('fi-mu__link'):
     if not "FULL-TIME" in m.text:
         continue
 
@@ -48,5 +50,5 @@ for m in web_driver.find_elements_by_class_name('fi-mu__link'):
         # print("Prexistent: ", match)
         continue
 
-web_driver.close()
+WEB_DRIVER.close()
 virtual_display.stop()
