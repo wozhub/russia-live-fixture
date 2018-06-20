@@ -1,27 +1,22 @@
 #!/usr/bin/env python3
 
 from time import sleep
-from selenium import webdriver
-from xvfbwrapper import Xvfb
 
 from database import Database
-
+from webdriver import create_webdriver
 
 db = Database()
 
-virtual_display = Xvfb()
-virtual_display.start()
-web_driver = webdriver.Chrome()
+WEB_DRIVER = create_webdriver()
 sleep(2)
-# d.maximize_window()
 
 # Busco los jugadores
 for team in db.teams.select().execute().fetchall():
-    web_driver.get(team.url)
+    WEB_DRIVER.get(team.url)
     sleep(5)
 
     players = []
-    for p in web_driver.find_elements_by_class_name('fi-p'):
+    for p in WEB_DRIVER.find_elements_by_class_name('fi-p'):
         pos = p.find_element_by_class_name('fi-p__info--role').text
         if pos == "COACH":
             continue
@@ -39,5 +34,4 @@ for team in db.teams.select().execute().fetchall():
         players.append(player)
         db.players.insert(player).execute()
 
-web_driver.close()
-virtual_display.stop()
+WEB_DRIVER.close()
