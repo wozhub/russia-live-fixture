@@ -40,7 +40,8 @@ for sheet in DOC.worksheets():
 if not FOUND:
     exit()
 
-GOALS = db.goals.select().execute().fetchall()
+#GOALS = db.goals.select().execute().fetchall()
+GOALS = db.goals.select().order_by(db.goals.columns.match_id).execute().fetchall()
 sheet.resize(len(GOALS), 6)
 # jugador+jurl home home_score away away_score purl
 
