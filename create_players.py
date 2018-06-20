@@ -2,6 +2,7 @@
 
 from time import sleep
 from selenium import webdriver
+from xvfbwrapper import Xvfb
 
 from database import Database
 
@@ -14,24 +15,9 @@ web_driver = webdriver.Chrome()
 sleep(2)
 # d.maximize_window()
 
-# Busco los equipos
-TEAMS_URL = "https://www.fifa.com/worldcup/teams/"
-web_driver.get(TEAMS_URL)
-
-TEAMS = []
-for t in web_driver.find_elements_by_class_name('fi-team-card__team'):
-    team = {
-        'id': int(t.get_attribute('data-team')),
-        'name': t.text,
-        'url': t.get_attribute('href'),
-    }
-    print(team)
-    TEAMS.append(team)
-    db.teams.insert(team).execute()
-
 # Busco los jugadores
-for team in TEAMS:
-    web_driver.get(team['url'])
+for team in db.teams.select().execute().fetchall():
+    web_driver.get(team.url)
     sleep(5)
 
     players = []
@@ -43,7 +29,7 @@ for team in TEAMS:
         url = p.find_element_by_class_name('fi-p--link').get_attribute('href')
         player = {
             'id': int(url.split('/')[-2]),
-            'team_id': team['id'],
+            'team_id': team.id,
             'num': int(p.find_element_by_class_name('fi-p__num').text),
             'name': p.find_element_by_class_name('fi-p__nShorter').text,
             'pos': pos,

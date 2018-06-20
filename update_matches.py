@@ -45,7 +45,7 @@ for m in web_driver.find_elements_by_class_name('fi-mu__link'):
         print("New: ", match)
 #        matches.append(match)
     except exc.IntegrityError:
-        print("Prexistent: ", match)
+        # print("Prexistent: ", match)
         continue
 
 web_driver.close()
