@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from time import sleep
+from sqlalchemy.exc import IntegrityError
 
 from database import Database
 from webdriver import create_webdriver
@@ -17,7 +18,12 @@ for team in db.teams.select().execute().fetchall():
 
     players = []
     for p in WEB_DRIVER.find_elements_by_class_name('fi-p'):
-        pos = p.find_element_by_class_name('fi-p__info--role').text
+
+        try:
+            pos = p.find_element_by_class_name('fi-p__info--role').text
+        except:
+            continue
+
         if pos == "COACH":
             continue
 
@@ -30,8 +36,12 @@ for team in db.teams.select().execute().fetchall():
             'pos': pos,
             'url': url,
         }
-        print(player)
-        players.append(player)
-        db.players.insert(player).execute()
+
+        try:
+            db.players.insert(player).execute()
+            players.append(player)
+            print(player)
+        except IntegrityError:
+            continue
 
 WEB_DRIVER.close()

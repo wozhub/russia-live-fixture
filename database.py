@@ -67,6 +67,7 @@ class Database():
             self.goals = Table('goals', self.metadata,
                                Column('id', Integer, primary_key=True),
                                Column('time', String(32)),
+                               Column('label', String(8)),
                                Column('player_id', String(32), ForeignKey('players.id')),
                                Column('match_id', String(32), ForeignKey('matches.id')),
                                UniqueConstraint('player_id', 'match_id', 'time'),

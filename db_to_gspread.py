@@ -52,7 +52,10 @@ for goal in GOALS:
     away = db.session.query(db.teams).filter(db.teams.columns.id == match.away_id)[0]
     player = db.session.query(db.players).filter(db.players.columns.id == goal.player_id)[0]
 
-    player_link = '=HYPERLINK("%s", "%s")' % (player_id_to_url(goal.player_id), player.name)
+    if goal.label == "OG":
+        player_link = '=HYPERLINK("%s", "%s (En contra)")' % (player_id_to_url(goal.player_id), player.name)
+    else:
+        player_link = '=HYPERLINK("%s", "%s")' % (player_id_to_url(goal.player_id), player.name)
     match_link = '=HYPERLINK("%s", "match url")' % (match_id_to_url(goal.match_id))
 
     cells = sheet.range("A%d:F%d" % (goal.id, goal.id))

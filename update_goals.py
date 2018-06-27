@@ -9,8 +9,10 @@ from webdriver import create_webdriver
 def parse_goal(web_element, match_id):
     """Return a goal dict ready to be inserted to base"""
     pid = int(web_element.find_element_by_tag_name('a').get_attribute('href').split('/')[-1])
+
     return {'player_id': pid,
             'time': web_element.find_element_by_class_name("fi-mh__scorer__minute").text,
+            'label': web_element.find_element_by_class_name("fi-mh__scorer__label").text,
             'match_id': match_id}
 
 
