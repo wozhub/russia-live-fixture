@@ -12,7 +12,8 @@ WEB_DRIVER = create_webdriver()
 sleep(2)
 
 # Busco los partidos
-MATCHES_URL = "https://www.fifa.com/worldcup/matches/"
+# MATCHES_URL = "https://www.fifa.com/worldcup/matches/"
+MATCHES_URL = "https://www.fifa.com/worldcup/matches/#knockoutphase"
 WEB_DRIVER.get(MATCHES_URL)
 sleep(5)
 
